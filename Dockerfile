@@ -1,5 +1,5 @@
 # OFFICIAL REPOSITORY: https://hub.docker.com/_/golang/
-FROM golang:1.10.2
+FROM golang:1.10.3
 
 MAINTAINER Yuichi Watanabe
 
