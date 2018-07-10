@@ -35,6 +35,23 @@ $ backlog-bulk-issue-registration [options]
 API Key is necessary because this CLI depends on Backlog API v2.  
 https://support.backlog.com/hc/en-us/articles/115015420567-API-Settings
 
+## Example
+From file:
+```
+$ backlog-bulk-issue-registration --file="./testdata/example.csv" \
+    --host="xxx.backlog.jp" \
+    --project="yourProjectKey" \
+    --key="yourAPIKey" \
+```
+
+From standard input:
+```
+$ cat ./testdata/example.csv | backlog-bulk-issue-registration \
+    --host="xxx.backlog.jp" \
+    --project="yourProjectKey" \
+    --key="yourAPIKey" \
+```
+
 ## Friends
 [backlog-bulk-issue-registration-gas](https://github.com/nulab/backlog-bulk-issue-registration-gas)
 
