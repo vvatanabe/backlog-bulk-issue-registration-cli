@@ -33,6 +33,12 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/vvatanabe/backlog-bulk-issue-registration-cli"
+  packages = ["internal"]
+  revision = "fd5632f094d00b2f41e4b4d559535344a4cc56d6"
+
+[[projects]]
+  branch = "master"
   name = "github.com/vvatanabe/errsgroup"
   packages = ["."]
   revision = "60189e4bc956c98c2163823261fb6974c5deade0"
@@ -70,6 +76,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "da04d3f1c2cd8f2d9f3236c79a3e51d48c10aaecf6b0e5c2c3251c2f6aacb36a"
+  inputs-digest = "2541e9f43e154639fe6b88b2282573cb29470b5eef41db5d7d1654e8a1e06ac9"
   solver-name = "gps-cdcl"
   solver-version = 1
