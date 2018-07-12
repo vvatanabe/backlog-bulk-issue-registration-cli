@@ -17,3 +17,5 @@ dist
 vendor/
 *.sh
 export.sh
+
+backlog-bulk-issue-registration

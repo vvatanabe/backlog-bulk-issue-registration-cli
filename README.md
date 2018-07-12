@@ -1,4 +1,4 @@
-# backlog-bulk-issue-registration-cli
+# backlog-bulk-issue-registration-cli a.k.a. bib
 
 ## Description
 A command line tool for bulk registering of Backlog issue.

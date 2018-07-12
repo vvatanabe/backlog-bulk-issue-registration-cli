@@ -47,11 +47,10 @@ var (
 
 func main() {
 	app := cli.NewApp()
-	app.Name = "backlog-bulk-issue-registration"
+	app.Name = Name
 	app.Usage = "A command line tool for bulk registering of Backlog issue."
 	app.UsageText = "backlog-bulk-issue-registration [options]"
-	app.Description = "TODO (Description)"
-	app.Version = "0.9.0"
+	app.Version = FmtVersion()
 	app.Flags = flags
 	app.Action = action
 	app.Run(os.Args)
