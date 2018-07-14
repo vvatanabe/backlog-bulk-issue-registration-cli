@@ -7,7 +7,7 @@ RELEASE_BUILD_LDFLAGS = -s -w $(BUILD_LDFLAGS)
 
 .PHONY: build
 build:
-	go build -ldflags="$(BUILD_LDFLAGS)" -o ./$(NAME) ./cmd/main.go
+	go build -ldflags="$(BUILD_LDFLAGS)" -o ./dist/$(NAME) ./cmd/main.go
 
 .PHONY: test
 test:
