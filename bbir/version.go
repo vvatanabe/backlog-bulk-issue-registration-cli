@@ -1,15 +1,15 @@
-package internal
+package bbir
 
 import "fmt"
 
 const (
-	Name = "backlog-bulk-issue-registration"
-	version = "0.9.0"
+	Name    = "bbir"
+	version = "1.0.0"
 )
 
 var (
 	commit string
-	date string
+	date   string
 )
 
 func FmtVersion() string {

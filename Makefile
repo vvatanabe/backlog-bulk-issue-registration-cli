@@ -1,4 +1,4 @@
-NAME = backlog-bulk-issue-registration
+NAME = bbir
 PKG = github.com/vvatanabe/backlog-bulk-issue-registration-cli
 COMMIT = $$(git describe --tags --always)
 DATE = $$(date '+%Y-%m-%d_%H:%M:%S')

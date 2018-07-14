@@ -1,4 +1,4 @@
-package internal
+package bbir
 
 // const fixturesPath = "../testdata/"
 

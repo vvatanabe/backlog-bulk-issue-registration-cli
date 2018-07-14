@@ -1,4 +1,4 @@
-package internal
+package bbir
 
 type Callback func(*CallbackOptions)
 

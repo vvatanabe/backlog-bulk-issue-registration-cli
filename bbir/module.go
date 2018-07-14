@@ -1,4 +1,4 @@
-package internal
+package bbir
 
 import (
 	"github.com/vvatanabe/shot/shot"

@@ -1,4 +1,4 @@
-package internal
+package bbir
 
 import (
 	"encoding/csv"

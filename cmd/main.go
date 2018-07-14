@@ -6,7 +6,7 @@ import (
 	"context"
 
 	"github.com/urfave/cli"
-	. "github.com/vvatanabe/backlog-bulk-issue-registration-cli/internal"
+	. "github.com/vvatanabe/backlog-bulk-issue-registration-cli/bbir"
 	"gopkg.in/cheggaaa/pb.v1"
 )
 

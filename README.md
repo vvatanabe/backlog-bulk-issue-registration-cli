@@ -1,4 +1,4 @@
-# backlog-bulk-issue-registration-cli a.k.a. bib
+# backlog-bulk-issue-registration-cli
 
 ## Description
 A command line tool for bulk registering of Backlog issue.
@@ -16,7 +16,7 @@ https://github.com/vvatanabe/backlog-bulk-issue-registration-cli/releases
 ## Usage
 
 ```
-$ backlog-bulk-issue-registration [options]
+$ bbir [options]
 ```
 
 ## Options
@@ -38,7 +38,7 @@ https://support.backlog.com/hc/en-us/articles/115015420567-API-Settings
 ## Example
 From file:
 ```
-$ backlog-bulk-issue-registration --file="./testdata/example.csv" \
+$ bbir --file="./testdata/example.csv" \
     --host="xxx.backlog.jp" \
     --project="yourProjectKey" \
     --key="yourAPIKey" \
@@ -46,7 +46,7 @@ $ backlog-bulk-issue-registration --file="./testdata/example.csv" \
 
 From standard input:
 ```
-$ cat ./testdata/example.csv | backlog-bulk-issue-registration \
+$ cat ./testdata/example.csv | bbir \
     --host="xxx.backlog.jp" \
     --project="yourProjectKey" \
     --key="yourAPIKey" \
