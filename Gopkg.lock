@@ -3,79 +3,109 @@
 
 [[projects]]
   branch = "master"
+  digest = "1:5cfd7eab81c2169e24cc7ca59d0cd5aa499d1c1a4172d53eab47473d074ce1b9"
   name = "github.com/golang/go"
   packages = ["src/sort"]
+  pruneopts = ""
   revision = "a67c481f765c08b8a2e0432e3c94cd282ee4a6d6"
 
 [[projects]]
   branch = "master"
+  digest = "1:d84d0f563cc649de4c9a8272a0395f75b11952202d18d4d927e933cc91493062"
   name = "github.com/golang/sync"
   packages = ["errgroup"]
+  pruneopts = ""
   revision = "1d60e4601c6fd243af51cc01ddf169918a5407ca"
 
 [[projects]]
+  digest = "1:81e673df85e765593a863f67cba4544cf40e8919590f04d67664940786c2b61a"
   name = "github.com/mattn/go-runewidth"
   packages = ["."]
+  pruneopts = ""
   revision = "9e777a8366cce605130a531d2cd6363d07ad7317"
   version = "v0.0.2"
 
 [[projects]]
+  digest = "1:7365acd48986e205ccb8652cc746f09c8b7876030d53710ea6ef7d0bd0dcd7ca"
   name = "github.com/pkg/errors"
   packages = ["."]
+  pruneopts = ""
   revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
   version = "v0.8.0"
 
 [[projects]]
+  digest = "1:4e3dde60e6be4a3fc63e7cbfb77ad061cbf412ac8e17f344bc71568785cd76e8"
   name = "github.com/urfave/cli"
   packages = ["."]
+  pruneopts = ""
   revision = "cfb38830724cc34fedffe9a2a29fb54fa9169cd1"
   version = "v1.20.0"
 
 [[projects]]
   branch = "master"
-  name = "github.com/vvatanabe/backlog-bulk-issue-registration-cli"
-  packages = ["internal"]
-  revision = "fd5632f094d00b2f41e4b4d559535344a4cc56d6"
-
-[[projects]]
-  branch = "master"
+  digest = "1:58adaa5dead0edf4e7d4e9f0b58a6a80c134814541f8982d22183ff3a108c6b8"
   name = "github.com/vvatanabe/errsgroup"
   packages = ["."]
+  pruneopts = ""
   revision = "60189e4bc956c98c2163823261fb6974c5deade0"
 
 [[projects]]
   branch = "master"
+  digest = "1:36387569999f407c06ca7a5452866db77dfd591e054def25208147157b570872"
   name = "github.com/vvatanabe/go-backlog"
-  packages = ["backlog/internal","backlog/shared","backlog/v2","httpc"]
+  packages = [
+    "backlog/internal",
+    "backlog/shared",
+    "backlog/v2",
+    "httpc",
+  ]
+  pruneopts = ""
   revision = "4444e6da77bbdaf934ba856ac6f311d75b5f7378"
 
 [[projects]]
+  digest = "1:dff3c3476f5a84dcb67575d22599ec5542e32a6c254aa535f9db0a7961499911"
   name = "github.com/vvatanabe/shot"
   packages = ["shot"]
+  pruneopts = ""
   revision = "3be513cfec14f97c24df43983ec91351f5ba7e5d"
   version = "0.9.2"
 
 [[projects]]
   branch = "master"
+  digest = "1:2020dd69bddfd67a145d454a7a9f374a2eafb6b0e2467428cb86cb539e93c00d"
   name = "golang.org/x/net"
   packages = ["context"]
+  pruneopts = ""
   revision = "c21de06aaf072cea07f3a65d6970e5c7d8b6cd6d"
 
 [[projects]]
   branch = "master"
+  digest = "1:880f5ae3ffdd8741fe179f0f70b46df57fcdd746f3a0e9d0e189bb6a241535e4"
   name = "golang.org/x/sys"
   packages = ["unix"]
+  pruneopts = ""
   revision = "1b2967e3c290b7c545b3db0deeda16e9be4f98a2"
 
 [[projects]]
+  digest = "1:bad73557501d55d722d9f1591b70382dbaa82b318702daebc60cbb1452f80a5b"
   name = "gopkg.in/cheggaaa/pb.v1"
   packages = ["."]
+  pruneopts = ""
   revision = "2af8bbdea9e99e83b3ac400d8f6b6d1b8cbbf338"
   version = "v1.0.25"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "2541e9f43e154639fe6b88b2282573cb29470b5eef41db5d7d1654e8a1e06ac9"
+  input-imports = [
+    "github.com/golang/go/src/sort",
+    "github.com/golang/sync/errgroup",
+    "github.com/pkg/errors",
+    "github.com/urfave/cli",
+    "github.com/vvatanabe/errsgroup",
+    "github.com/vvatanabe/go-backlog/backlog/v2",
+    "github.com/vvatanabe/shot/shot",
+    "gopkg.in/cheggaaa/pb.v1",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
