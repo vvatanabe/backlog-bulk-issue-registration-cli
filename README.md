@@ -21,14 +21,14 @@ $ bbir [options]
 
 ## Options
 ```
---host value     (Required) backlog host name. Ex: xxx.backlog.jp, xxx.backlog.com [$BACKLOG_HOST]
---project value  (Required) backlog project key. [$BACKLOG_PROJECT_KEY]
---key value      (Required) backlog api key. [$BACKLOG_API_KEY]
---file value     import file path. [$BACKLOG_IMPORT_FILE]
---lang value     language setting. (ja or en) (default: "ja") [$BACKLOG_LANG]
---progress       show progress bar
---help, -h       show help
---version, -v    print the version
+--host, -H value     (Required) backlog host name. Ex: xxx.backlog.jp [$BACKLOG_HOST]
+--project, -p value  (Required) backlog project key.                  [$BACKLOG_PROJECT_KEY]
+--key, -k value      (Required) backlog api key.                      [$BACKLOG_API_KEY]
+--file, -f value     import file path.                                [$BACKLOG_IMPORT_FILE]
+--lang, -l value     language setting. (ja or en) (default: "ja")     [$BACKLOG_LANG]
+--progress, -P       show progress bar
+--help, -h           show help
+--version, -v        print the version
 ```
 
 ### Backlog API Key
