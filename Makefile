@@ -1,9 +1,9 @@
 NAME = bbir
 PKG = github.com/vvatanabe/backlog-bulk-issue-registration-cli
-VERSION = $(shell gobump show -r)
+VERSION = $(shell gobump show -r ./bbir)
 COMMIT = $$(git describe --tags --always)
 DATE = $$(date '+%Y-%m-%d_%H:%M:%S')
-BUILD_LDFLAGS = -X $(PKG)/internal.commit=$(COMMIT) -X $(PKG)/internal.date=$(DATE)
+BUILD_LDFLAGS = -X $(PKG)/bbir.commit=$(COMMIT) -X $(PKG)/bbir.date=$(DATE)
 RELEASE_BUILD_LDFLAGS = -s -w $(BUILD_LDFLAGS)
 
 ifeq ($(update),yes)
@@ -43,17 +43,16 @@ bump: devel-deps
 
 .PHONY: build
 build:
-	go build -ldflags="$(BUILD_LDFLAGS)" -o ./dist/$(NAME) ./cmd/main.go
+	go build -ldflags="$(BUILD_LDFLAGS)" -o ./dist/current/$(NAME) ./cmd/main.go
 
 .PHONY: crossbuild
 crossbuild: devel-deps
-	$(eval ver = $(shell gobump show -r))
-	goxz -pv=$(ver) -arch=386,amd64 -build-ldflags="$(RELEASE_BUILD_LDFLAGS)" \
-	  -o=$(NAME) -d=./dist/$(ver) ./cmd
+	goxz -pv=$(VERSION) -arch=386,amd64 -build-ldflags="$(RELEASE_BUILD_LDFLAGS)" \
+	  -o=$(NAME) -d=./dist/$(VERSION) ./cmd
 
 .PHONY: upload
 upload:
-	ghr -username vvatanabe -replace ${VERSION} ./dist/${ver}
+	ghr -username vvatanabe -replace $(VERSION) ./dist/$(VERSION)
 
 .PHONY: release
 release:
