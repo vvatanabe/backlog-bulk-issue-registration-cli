@@ -52,6 +52,19 @@ $ cat ./testdata/example.csv | bbir \
     --key="yourAPIKey" \
 ```
 
+## CSV Specification
+Please refer to the example below:
+- [example.csv](https://github.com/vvatanabe/backlog-bulk-issue-registration-cli/blob/master/testdata/example.csv)
+- [example_ja.csv](https://github.com/vvatanabe/backlog-bulk-issue-registration-cli/blob/master/testdata/example_ja.csv)
+
+If you put an asterisk in parent issue, the above issue becomes the parent issue:
+```
+Header: Summary (Required), ... , ParentIssue
+Line 1: Summary1          , ... ,   (This line is parent issue of line 2 and 3.)
+Line 2: Summary1-1        , ... , * (This line is child issue of line 1.)
+Line 3: Summary1-2        , ... , * (This line is child issue of line 1.)
+```
+
 ## Friends
 [backlog-bulk-issue-registration-gas](https://github.com/nulab/backlog-bulk-issue-registration-gas)
 
