@@ -13,9 +13,8 @@ func NewConfig(c *cli.Context) *Config {
 		Lang: func() Lang {
 			if c.String("lang") == En.Value() {
 				return En
-			} else {
-				return Ja
 			}
+			return Ja
 		}(),
 		Progress: c.Bool("progress"),
 	}

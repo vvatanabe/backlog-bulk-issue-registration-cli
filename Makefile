@@ -25,8 +25,12 @@ devel-deps: deps
 	go get ${u} github.com/tcnksm/ghr
 
 .PHONY: test
-test:
-	go test -v -race ./bbir/...
+test: deps
+	go test -v -race -covermode=atomic -coverprofile=coverage.out ./bbir/...
+
+.PHONY: cover
+cover: devel-deps
+	goveralls -coverprofile=coverage.out -service=travis-ci
 
 .PHONY: lint
 lint: devel-deps

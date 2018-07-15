@@ -110,11 +110,11 @@ func (b *commandBuilder) ensureEstimatedHours(cmd *Command, line *Line) error {
 		if len(split) == 2 && len(split[1]) > 2 {
 			return errors.New(b.msgs.EstimatedHoursIsInvalid(line.EstimatedHours))
 		}
-		if v, err := strconv.ParseFloat(line.EstimatedHours, 64); err != nil || (math.Signbit(v) && v < 0) {
+		v, err := strconv.ParseFloat(line.EstimatedHours, 64)
+		if err != nil || (math.Signbit(v) && v < 0) {
 			return errors.New(b.msgs.EstimatedHoursIsInvalid(line.EstimatedHours))
-		} else {
-			cmd.EstimatedHours = &v
 		}
+		cmd.EstimatedHours = &v
 	}
 	return nil
 }
@@ -130,11 +130,11 @@ func (b *commandBuilder) ensureActualHours(cmd *Command, line *Line) error {
 		if len(split) == 2 && len(split[1]) > 2 {
 			return errors.New(b.msgs.EstimatedHoursIsInvalid(line.ActualHours))
 		}
-		if v, err := strconv.ParseFloat(line.ActualHours, 64); err != nil || (math.Signbit(v) && v < 0) {
+		v, err := strconv.ParseFloat(line.ActualHours, 64)
+		if err != nil || (math.Signbit(v) && v < 0) {
 			return errors.New(b.msgs.EstimatedHoursIsInvalid(line.ActualHours))
-		} else {
-			cmd.ActualHours = &v
 		}
+		cmd.ActualHours = &v
 	}
 	return nil
 }
@@ -177,33 +177,33 @@ func (b *commandBuilder) ensureCategoryID(cmd *Command, line *Line) error {
 
 func (b *commandBuilder) ensureVersionID(cmd *Command, line *Line) error {
 	if line.Version != "" {
-		if v := b.project.FindVersionByName(line.Version); v == nil {
+		v := b.project.FindVersionByName(line.Version)
+		if v == nil {
 			return errors.New(b.msgs.VersionIsNotRegistered(line.Version))
-		} else {
-			cmd.VersionID = NewVersionIDPtr(v.ID)
 		}
+		cmd.VersionID = NewVersionIDPtr(v.ID)
 	}
 	return nil
 }
 
 func (b *commandBuilder) ensureMilestoneID(cmd *Command, line *Line) error {
 	if line.Milestone != "" {
-		if v := b.project.FindVersionByName(line.Milestone); v == nil {
+		v := b.project.FindVersionByName(line.Milestone)
+		if v == nil {
 			return errors.New(b.msgs.MilestoneIsNotRegistered(line.Milestone))
-		} else {
-			cmd.MilestoneID = NewVersionIDPtr(v.ID)
 		}
+		cmd.MilestoneID = NewVersionIDPtr(v.ID)
 	}
 	return nil
 }
 
 func (b *commandBuilder) ensureAssigneeID(cmd *Command, line *Line) error {
 	if line.Assignee != "" {
-		if v := b.project.FindUserByUserID(line.Assignee); v == nil {
+		v := b.project.FindUserByUserID(line.Assignee)
+		if v == nil {
 			return errors.New(b.msgs.AssigneeIsNotJoining(line.Assignee))
-		} else {
-			cmd.AssigneeID = NewUserIDPtr(v.ID)
 		}
+		cmd.AssigneeID = NewUserIDPtr(v.ID)
 	}
 	return nil
 }

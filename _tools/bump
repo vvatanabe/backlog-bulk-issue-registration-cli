@@ -11,6 +11,6 @@ gobump set $next_version -w ./bbir
 echo "--> Generating CHANGELOG"
 ghch -w -N $next_version
 
-git commit -am "Bump version $next_version"
-git tag $next_version
-git push && git push --tags
+#git commit -am "Bump version $next_version"
+#git tag $next_version
+#git push && git push --tags

@@ -6,12 +6,12 @@ import (
 	"sync"
 
 	"github.com/golang/sync/errgroup"
-	. "github.com/vvatanabe/go-backlog/backlog/v2"
+	"github.com/vvatanabe/go-backlog/backlog/v2"
 )
 
 type IssueRepository interface {
-	FindIssueByKey(ctx context.Context, issueKey string) (*Issue, error)
-	AddIssue(ctx context.Context, projectID ProjectID, summary string, issueTypeID IssueTypeID, priorityID PriorityID, opt *AddIssueOptions) (*Issue, error)
+	FindIssueByKey(ctx context.Context, issueKey string) (*v2.Issue, error)
+	AddIssue(ctx context.Context, projectID ProjectID, summary string, issueTypeID IssueTypeID, priorityID PriorityID, opt *v2.AddIssueOptions) (*v2.Issue, error)
 }
 
 func NewIssueHTTPClient(client BacklogAPIClient) IssueRepository {
@@ -26,37 +26,36 @@ type IssueHTTPClient struct {
 	issues sync.Map
 }
 
-func (s *IssueHTTPClient) FindIssueByKey(ctx context.Context, issueKey string) (*Issue, error) {
+func (s *IssueHTTPClient) FindIssueByKey(ctx context.Context, issueKey string) (*v2.Issue, error) {
 	if v, ok := s.issues.Load(issueKey); ok {
 		if v != nil {
-			return v.(*Issue), nil
-		} else {
-			return nil, nil
+			return v.(*v2.Issue), nil
 		}
+		return nil, nil
 	}
-	if v, err := s.client.GetIssue(ctx, issueKey); err != nil {
+	v, err := s.client.GetIssue(ctx, issueKey)
+	if err != nil {
 		return nil, err
-	} else {
-		s.issues.Store(issueKey, v)
-		return v, nil
 	}
+	s.issues.Store(issueKey, v)
+	return v, nil
 }
 
-func (s *IssueHTTPClient) AddIssue(ctx context.Context, projectID ProjectID, summary string, issueTypeID IssueTypeID, priorityID PriorityID, opt *AddIssueOptions) (*Issue, error) {
-	if v, err := s.client.AddIssue(ctx, projectID, summary, issueTypeID, priorityID, opt); err != nil {
+func (s *IssueHTTPClient) AddIssue(ctx context.Context, projectID ProjectID, summary string, issueTypeID IssueTypeID, priorityID PriorityID, opt *v2.AddIssueOptions) (*v2.Issue, error) {
+	v, err := s.client.AddIssue(ctx, projectID, summary, issueTypeID, priorityID, opt)
+	if err != nil {
 		return nil, err
-	} else {
-		s.issues.Store(v.IssueKey, v)
-		return v, nil
 	}
+	s.issues.Store(v.IssueKey, v)
+	return v, nil
 }
 
 type ProjectRepository interface {
 	GetProjectID() ProjectID
-	FindUserByUserID(userID string) *User
-	FindIssueTypeByName(name string) *IssueType
-	FindCategoryByName(name string) *Category
-	FindVersionByName(name string) *Version
+	FindUserByUserID(userID string) *v2.User
+	FindIssueTypeByName(name string) *v2.IssueType
+	FindCategoryByName(name string) *v2.Category
+	FindVersionByName(name string) *v2.Version
 	Prefetch(ctx context.Context) error
 }
 
@@ -64,10 +63,10 @@ func NewProjectHTTPClient(cfg *Config, client BacklogAPIClient) ProjectRepositor
 	return &ProjectHTTPClient{
 		cfg:        cfg,
 		client:     client,
-		users:      make(map[string]*User),
-		issueTypes: make(map[string]*IssueType),
-		categories: make(map[string]*Category),
-		versions:   make(map[string]*Version),
+		users:      make(map[string]*v2.User),
+		issueTypes: make(map[string]*v2.IssueType),
+		categories: make(map[string]*v2.Category),
+		versions:   make(map[string]*v2.Version),
 	}
 }
 
@@ -75,18 +74,18 @@ type ProjectHTTPClient struct {
 	cfg    *Config
 	client BacklogAPIClient
 
-	project    *Project
-	users      map[string]*User
-	issueTypes map[string]*IssueType
-	categories map[string]*Category
-	versions   map[string]*Version
+	project    *v2.Project
+	users      map[string]*v2.User
+	issueTypes map[string]*v2.IssueType
+	categories map[string]*v2.Category
+	versions   map[string]*v2.Version
 }
 
 func (s *ProjectHTTPClient) GetProjectID() ProjectID {
 	return ProjectID(s.project.ID)
 }
 
-func (s *ProjectHTTPClient) FindUserByUserID(userID string) *User {
+func (s *ProjectHTTPClient) FindUserByUserID(userID string) *v2.User {
 	v, ok := s.users[userID]
 	if !ok {
 		return nil
@@ -94,7 +93,7 @@ func (s *ProjectHTTPClient) FindUserByUserID(userID string) *User {
 	return v
 }
 
-func (s *ProjectHTTPClient) FindIssueTypeByName(name string) *IssueType {
+func (s *ProjectHTTPClient) FindIssueTypeByName(name string) *v2.IssueType {
 	v, ok := s.issueTypes[name]
 	if !ok {
 		return nil
@@ -102,7 +101,7 @@ func (s *ProjectHTTPClient) FindIssueTypeByName(name string) *IssueType {
 	return v
 }
 
-func (s *ProjectHTTPClient) FindCategoryByName(name string) *Category {
+func (s *ProjectHTTPClient) FindCategoryByName(name string) *v2.Category {
 	v, ok := s.categories[name]
 	if !ok {
 		return nil
@@ -110,7 +109,7 @@ func (s *ProjectHTTPClient) FindCategoryByName(name string) *Category {
 	return v
 }
 
-func (s *ProjectHTTPClient) FindVersionByName(name string) *Version {
+func (s *ProjectHTTPClient) FindVersionByName(name string) *v2.Version {
 	v, ok := s.versions[name]
 	if !ok {
 		return nil

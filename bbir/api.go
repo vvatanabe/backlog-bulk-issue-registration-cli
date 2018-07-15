@@ -4,30 +4,30 @@ import (
 	"context"
 	"fmt"
 
-	. "github.com/vvatanabe/go-backlog/backlog/v2"
+	"github.com/vvatanabe/go-backlog/backlog/v2"
 )
 
 type BacklogAPIClient interface {
-	AddIssue(ctx context.Context, projectID ProjectID, summary string, issueTypeID IssueTypeID, priorityID PriorityID, opt *AddIssueOptions) (*Issue, error)
-	GetIssue(ctx context.Context, issueKey string) (*Issue, error)
-	GetProject(ctx context.Context, projectKey string) (*Project, error)
-	GetProjectUsers(ctx context.Context, id ProjectID) ([]*User, error)
-	GetIssueTypes(ctx context.Context, id ProjectID) ([]*IssueType, error)
-	GetCategories(ctx context.Context, id ProjectID) ([]*Category, error)
-	GetVersions(ctx context.Context, id ProjectID) ([]*Version, error)
+	AddIssue(ctx context.Context, projectID ProjectID, summary string, issueTypeID IssueTypeID, priorityID PriorityID, opt *v2.AddIssueOptions) (*v2.Issue, error)
+	GetIssue(ctx context.Context, issueKey string) (*v2.Issue, error)
+	GetProject(ctx context.Context, projectKey string) (*v2.Project, error)
+	GetProjectUsers(ctx context.Context, id ProjectID) ([]*v2.User, error)
+	GetIssueTypes(ctx context.Context, id ProjectID) ([]*v2.IssueType, error)
+	GetCategories(ctx context.Context, id ProjectID) ([]*v2.Category, error)
+	GetVersions(ctx context.Context, id ProjectID) ([]*v2.Version, error)
 }
 
 func NewBacklogAPIClient(cfg *Config) BacklogAPIClient {
-	c := NewClient(cfg.SpaceDomain, nil)
+	c := v2.NewClient(cfg.SpaceDomain, nil)
 	c.SetAPIKey(cfg.APIKey)
 	return &client{c}
 }
 
 type client struct {
-	*Client
+	*v2.Client
 }
 
-func (c *client) AddIssue(ctx context.Context, projectID ProjectID, summary string, issueTypeID IssueTypeID, priorityID PriorityID, opt *AddIssueOptions) (*Issue, error) {
+func (c *client) AddIssue(ctx context.Context, projectID ProjectID, summary string, issueTypeID IssueTypeID, priorityID PriorityID, opt *v2.AddIssueOptions) (*v2.Issue, error) {
 	v, _, err := c.Issues.AddIssue(ctx, int(projectID), summary, int(issueTypeID), int(priorityID), opt)
 	if err != nil {
 		return nil, err
@@ -35,7 +35,7 @@ func (c *client) AddIssue(ctx context.Context, projectID ProjectID, summary stri
 	return v, nil
 }
 
-func (c *client) GetIssue(ctx context.Context, issueKey string) (*Issue, error) {
+func (c *client) GetIssue(ctx context.Context, issueKey string) (*v2.Issue, error) {
 	v, _, err := c.Issues.GetIssue(ctx, issueKey)
 	if err != nil {
 		return nil, err
@@ -43,7 +43,7 @@ func (c *client) GetIssue(ctx context.Context, issueKey string) (*Issue, error) 
 	return v, nil
 }
 
-func (c *client) GetProject(ctx context.Context, projectKey string) (*Project, error) {
+func (c *client) GetProject(ctx context.Context, projectKey string) (*v2.Project, error) {
 	v, _, err := c.Projects.GetProject(ctx, projectKey)
 	if err != nil {
 		return nil, err
@@ -51,7 +51,7 @@ func (c *client) GetProject(ctx context.Context, projectKey string) (*Project, e
 	return v, nil
 }
 
-func (c *client) GetProjectUsers(ctx context.Context, id ProjectID) ([]*User, error) {
+func (c *client) GetProjectUsers(ctx context.Context, id ProjectID) ([]*v2.User, error) {
 	v, _, err := c.Projects.GetProjectUsers(ctx, fmt.Sprintf("%v", id))
 	if err != nil {
 		return nil, err
@@ -59,7 +59,7 @@ func (c *client) GetProjectUsers(ctx context.Context, id ProjectID) ([]*User, er
 	return v, nil
 }
 
-func (c *client) GetIssueTypes(ctx context.Context, id ProjectID) ([]*IssueType, error) {
+func (c *client) GetIssueTypes(ctx context.Context, id ProjectID) ([]*v2.IssueType, error) {
 	v, _, err := c.Projects.GetIssueTypes(ctx, fmt.Sprintf("%v", id))
 	if err != nil {
 		return nil, err
@@ -67,7 +67,7 @@ func (c *client) GetIssueTypes(ctx context.Context, id ProjectID) ([]*IssueType,
 	return v, nil
 }
 
-func (c *client) GetCategories(ctx context.Context, id ProjectID) ([]*Category, error) {
+func (c *client) GetCategories(ctx context.Context, id ProjectID) ([]*v2.Category, error) {
 	v, _, err := c.Projects.GetCategories(ctx, fmt.Sprintf("%v", id))
 	if err != nil {
 		return nil, err
@@ -75,7 +75,7 @@ func (c *client) GetCategories(ctx context.Context, id ProjectID) ([]*Category, 
 	return v, nil
 }
 
-func (c *client) GetVersions(ctx context.Context, id ProjectID) ([]*Version, error) {
+func (c *client) GetVersions(ctx context.Context, id ProjectID) ([]*v2.Version, error) {
 	v, _, err := c.Projects.GetVersions(ctx, fmt.Sprintf("%v", id))
 	if err != nil {
 		return nil, err
