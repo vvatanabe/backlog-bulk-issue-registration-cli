@@ -1,4 +1,4 @@
-# backlog-bulk-issue-registration-cli
+# backlog-bulk-issue-registration-cli [![Build Status](https://travis-ci.org/vvatanabe/backlog-bulk-issue-registration-cli.svg?branch=master)](https://travis-ci.org/vvatanabe/backlog-bulk-issue-registration-cli) [![Coverage Status](https://coveralls.io/repos/github/vvatanabe/backlog-bulk-issue-registration-cli/badge.svg?branch=master)](https://coveralls.io/github/vvatanabe/backlog-bulk-issue-registration-cli?branch=master)
 
 ## Description
 A command line tool for bulk registering of Backlog issue.
