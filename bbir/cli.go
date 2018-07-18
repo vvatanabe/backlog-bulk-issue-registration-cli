@@ -17,12 +17,12 @@ var (
 		},
 		cli.StringFlag{
 			EnvVar: "BACKLOG_PROJECT_KEY",
-			Name:   "project, p",
+			Name:   "project, P",
 			Usage:  "(Required) backlog project key.",
 		},
 		cli.StringFlag{
 			EnvVar: "BACKLOG_API_KEY",
-			Name:   "key, k",
+			Name:   "key, K",
 			Usage:  "(Required) backlog api key.",
 		},
 		cli.StringFlag{
@@ -32,7 +32,7 @@ var (
 			Usage:  "language setting. (ja or en)",
 		},
 		cli.BoolFlag{
-			Name:  "progress, P",
+			Name:  "progress, p",
 			Usage: "show progress bar",
 		},
 	}
