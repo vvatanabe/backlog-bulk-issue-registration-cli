@@ -26,11 +26,6 @@ var (
 			Usage:  "(Required) backlog api key.",
 		},
 		cli.StringFlag{
-			EnvVar: "BACKLOG_IMPORT_FILE",
-			Name:   "file, f",
-			Usage:  "import file path. If not specified, it will listen on standard input",
-		},
-		cli.StringFlag{
 			EnvVar: "BACKLOG_LANG",
 			Name:   "lang, l",
 			Value:  "ja",
@@ -47,7 +42,7 @@ func NewCLI() *CLI {
 	app := cli.NewApp()
 	app.Name = Name
 	app.Usage = "A command line tool for bulk registering of Backlog issue."
-	app.UsageText = Name + " [options]"
+	app.UsageText = Name + " [options] FILE_PATH"
 	app.Version = FmtVersion()
 	app.Flags = flags
 	app.Action = action

@@ -16,15 +16,16 @@ https://github.com/vvatanabe/backlog-bulk-issue-registration-cli/releases
 ## Usage
 
 ```
-$ bbir [options]
+$ bbir [options] FILE_PATH
 ```
+
+If you do not specify a FILE_PATH, it will listen on standard input.
 
 ## Options
 ```
 --host, -H value     (Required) backlog host name. Ex: xxx.backlog.jp [$BACKLOG_HOST]
 --project, -p value  (Required) backlog project key.                  [$BACKLOG_PROJECT_KEY]
 --key, -k value      (Required) backlog api key.                      [$BACKLOG_API_KEY]
---file, -f value     import file path.                                [$BACKLOG_IMPORT_FILE]
 --lang, -l value     language setting. (ja or en) (default: "ja")     [$BACKLOG_LANG]
 --progress, -P       show progress bar
 --help, -h           show help
@@ -38,10 +39,10 @@ https://support.backlog.com/hc/en-us/articles/115015420567-API-Settings
 ## Example
 From file:
 ```
-$ bbir --file="./testdata/example.csv" \
-    --host="xxx.backlog.jp" \
+$ bbir --host="xxx.backlog.jp" \
     --project="yourProjectKey" \
     --key="yourAPIKey" \
+    ./testdata/example.csv
 ```
 
 From standard input:
