@@ -29,9 +29,9 @@ func NewInjectorForCommandBuilderTest(t *testing.T) shot.Injector {
 				}, nil
 			},
 			getProjectUsers: func(ctx context.Context, id ProjectID) ([]*User, error) {
-				user1 := &User{ID: 1, UserID: "ken"}
-				user2 := &User{ID: 2, UserID: "taro"}
-				user3 := 	&User{ID: 3, UserID: "hana"}
+				user1 := &User{ID: 1, Name: "ken"}
+				user2 := &User{ID: 2, Name: "taro"}
+				user3 := 	&User{ID: 3, Name: "hana"}
 				return []*User{user1, user2, user3}, nil
 			},
 			getIssueTypes: func(ctx context.Context, id ProjectID) ([]*IssueType, error) {

@@ -199,7 +199,7 @@ func (b *commandBuilder) ensureMilestoneID(cmd *Command, line *Line) error {
 
 func (b *commandBuilder) ensureAssigneeID(cmd *Command, line *Line) error {
 	if line.Assignee != "" {
-		v := b.project.FindUserByUserID(line.Assignee)
+		v := b.project.FindUserByName(line.Assignee)
 		if v == nil {
 			return errors.New(b.msgs.AssigneeIsNotJoining(line.Assignee))
 		}

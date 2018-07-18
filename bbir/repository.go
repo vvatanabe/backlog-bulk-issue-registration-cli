@@ -52,7 +52,7 @@ func (s *IssueHTTPClient) AddIssue(ctx context.Context, projectID ProjectID, sum
 
 type ProjectRepository interface {
 	GetProjectID() ProjectID
-	FindUserByUserID(userID string) *v2.User
+	FindUserByName(name string) *v2.User
 	FindIssueTypeByName(name string) *v2.IssueType
 	FindCategoryByName(name string) *v2.Category
 	FindVersionByName(name string) *v2.Version
@@ -85,8 +85,8 @@ func (s *ProjectHTTPClient) GetProjectID() ProjectID {
 	return ProjectID(s.project.ID)
 }
 
-func (s *ProjectHTTPClient) FindUserByUserID(userID string) *v2.User {
-	v, ok := s.users[userID]
+func (s *ProjectHTTPClient) FindUserByName(name string) *v2.User {
+	v, ok := s.users[name]
 	if !ok {
 		return nil
 	}
@@ -133,7 +133,7 @@ func (s *ProjectHTTPClient) Prefetch(ctx context.Context) error {
 				return err
 			}
 			for _, v := range users {
-				s.users[v.UserID] = v
+				s.users[v.Name] = v
 			}
 			return nil
 		},
