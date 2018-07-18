@@ -9,7 +9,7 @@ func NewConfig(c *cli.Context) *Config {
 		SpaceDomain: c.String("host"),
 		ProjectKey:  c.String("project"),
 		APIKey:      c.String("key"),
-		File:        c.String("file"),
+		File:        c.Args().First(),
 		Lang: func() Lang {
 			if c.String("lang") == En.Value() {
 				return En
