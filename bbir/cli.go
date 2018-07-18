@@ -28,7 +28,7 @@ var (
 		cli.StringFlag{
 			EnvVar: "BACKLOG_LANG",
 			Name:   "lang, l",
-			Value:  "ja",
+			Value:  "en",
 			Usage:  "language setting. (ja or en)",
 		},
 		cli.BoolFlag{

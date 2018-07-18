@@ -26,7 +26,7 @@ If you do not specify a FILE_PATH, it will listen on standard input.
 --host, -H value     (Required) backlog host name. Ex: xxx.backlog.jp [$BACKLOG_HOST]
 --project, -p value  (Required) backlog project key.                  [$BACKLOG_PROJECT_KEY]
 --key, -k value      (Required) backlog api key.                      [$BACKLOG_API_KEY]
---lang, -l value     language setting. (ja or en) (default: "ja")     [$BACKLOG_LANG]
+--lang, -l value     language setting. (ja or en) (default: "en")     [$BACKLOG_LANG]
 --progress, -P       show progress bar
 --help, -h           show help
 --version, -v        print the version
