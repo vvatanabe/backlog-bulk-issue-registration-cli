@@ -11,10 +11,10 @@ func NewConfig(c *cli.Context) *Config {
 		APIKey:      c.String("key"),
 		File:        c.Args().First(),
 		Lang: func() Lang {
-			if c.String("lang") == En.Value() {
-				return En
+			if c.String("lang") == Ja.Value() {
+				return Ja
 			}
-			return Ja
+			return En
 		}(),
 		Progress: c.Bool("progress"),
 	}
