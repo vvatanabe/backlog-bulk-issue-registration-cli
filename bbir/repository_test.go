@@ -25,7 +25,7 @@ func (r *IssueRepositoryAsMock) AddIssue(ctx context.Context, projectID ProjectI
 
 type ProjectRepositoryAsMock struct {
 	getProjectID        func() ProjectID
-	findUserByUserID    func(userID string) *User
+	findUserByName      func(name string) *User
 	findIssueTypeByName func(name string) *IssueType
 	findCategoryByName  func(name string) *Category
 	findVersionByName   func(name string) *Version
@@ -36,8 +36,8 @@ func (r *ProjectRepositoryAsMock) GetProjectID() ProjectID {
 	return r.getProjectID()
 }
 
-func (r *ProjectRepositoryAsMock) FindUserByUserID(userID string) *User {
-	return r.findUserByUserID(userID)
+func (r *ProjectRepositoryAsMock) FindUserByName(name string) *User {
+	return r.findUserByName(name)
 }
 
 func (r *ProjectRepositoryAsMock) FindIssueTypeByName(name string) *IssueType {
@@ -68,9 +68,9 @@ func NewInjectorForRepositoryTest(t *testing.T) shot.Injector {
 				}, nil
 			},
 			getProjectUsers: func(ctx context.Context, id ProjectID) ([]*User, error) {
-				user1 := &User{ID: 1, UserID: "ken"}
-				user2 := &User{ID: 2, UserID: "taro"}
-				user3 := &User{ID: 3, UserID: "hana"}
+				user1 := &User{ID: 1, Name: "ken"}
+				user2 := &User{ID: 2, Name: "taro"}
+				user3 := &User{ID: 3, Name: "hana"}
 				return []*User{user1, user2, user3}, nil
 			},
 			getIssueTypes: func(ctx context.Context, id ProjectID) ([]*IssueType, error) {
@@ -155,24 +155,24 @@ func Test_ProjectHTTPClient_GetProjectID(t *testing.T) {
 	}
 }
 
-func Test_ProjectHTTPClient_FindUserByUserID_should_return_user_that_match_name(t *testing.T) {
+func Test_ProjectHTTPClient_FindUserByName_should_return_user_that_match_name(t *testing.T) {
 	injector := NewInjectorForRepositoryTest(t)
 	project := injector.Get(new(ProjectRepository)).(*ProjectHTTPClient)
 	want := "ken"
-	result := project.FindUserByUserID(want)
+	result := project.FindUserByName(want)
 	if result == nil {
 		t.Error("Result is nil")
 	}
-	if want != result.UserID {
+	if want != result.Name {
 		t.Errorf("Could not match result. want: %v, result:  %v", want, result)
 	}
 }
 
-func Test_ProjectHTTPClient_FindUserByUserID_should_return_nil_if_does_not_match_userID(t *testing.T) {
+func Test_ProjectHTTPClient_FindUserByName_should_return_nil_if_does_not_match_name(t *testing.T) {
 	injector := NewInjectorForRepositoryTest(t)
 	project := injector.Get(new(ProjectRepository)).(*ProjectHTTPClient)
 	want := "xxx"
-	result := project.FindUserByUserID(want)
+	result := project.FindUserByName(want)
 	if result != nil {
 		t.Error("Result is not nil")
 	}

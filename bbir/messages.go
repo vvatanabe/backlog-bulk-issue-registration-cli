@@ -18,7 +18,7 @@ type Messages interface {
 	CategoryIsNotRegistered(name string) string
 	VersionIsNotRegistered(name string) string
 	MilestoneIsNotRegistered(name string) string
-	AssigneeIsNotJoining(userID string) string
+	AssigneeIsNotJoining(name string) string
 	ParentIssueIsNotRegistered(issueKey string) string
 	ParentIssueAlreadyRegisteredAsChildIssue(issueIDOrKey interface{}) string
 
@@ -96,8 +96,8 @@ func (m *Japanese) MilestoneIsNotRegistered(name string) string {
 	return fmt.Sprintf("課題のマイルストーン (%v) は登録されていません", name)
 }
 
-func (m *Japanese) AssigneeIsNotJoining(userID string) string {
-	return fmt.Sprintf("課題の担当者 (%v) はプロジェクトに参加していません", userID)
+func (m *Japanese) AssigneeIsNotJoining(name string) string {
+	return fmt.Sprintf("課題の担当者 (%v) はプロジェクトに参加していません", name)
 }
 
 func (m *Japanese) ParentIssueIsNotRegistered(issueKey string) string {
@@ -192,8 +192,8 @@ func (m *English) MilestoneIsNotRegistered(name string) string {
 	return fmt.Sprintf("The milestone (%v) is not registered", name)
 }
 
-func (m *English) AssigneeIsNotJoining(userID string) string {
-	return fmt.Sprintf("The assignee (%v) is not joining in the project", userID)
+func (m *English) AssigneeIsNotJoining(name string) string {
+	return fmt.Sprintf("The assignee (%v) is not joining in the project", name)
 }
 
 func (m *English) ParentIssueIsNotRegistered(issueKey string) string {
