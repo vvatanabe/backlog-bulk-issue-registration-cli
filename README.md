@@ -53,6 +53,22 @@ $ cat ./testdata/example.csv | bbir \
     --key="yourAPIKey" \
 ```
 
+## Support Fields
+- Summary (Required)
+- Description
+- StartDate
+- DueDate
+- EstimatedHours
+- ActualHours
+- IssueTypeName (Required)
+- Category
+- Version
+- Milestone
+- Priority
+- Assignee
+- ParentIssue
+- CustomFields
+
 ## CSV Specification
 Please refer to the example below:
 - [example.csv](https://github.com/vvatanabe/backlog-bulk-issue-registration-cli/blob/master/testdata/example.csv)
