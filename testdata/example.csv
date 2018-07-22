@@ -1,8 +1,8 @@
-Summary (Required), Description, StartDate, DueDate, EstimatedHours, ActualHours, IssueTypeName (Required), CategoryName, VersionName, MilestoneName, PriorityID, AssigneeName, ParentIssueKey
-Summary1,Description1,2017/01/01,2017/01/02,1.00,2.00,task,web,sprint1,sprint2,2,,
-Summary2,Description2,2017/02/01,2017/02/02,3.00,4.00,task,web,sprint1,sprint2,3,,
-Summary3,Description3,2017/03/01,2017/03/02,5.00,6.00,task,web,sprint1,sprint2,4,,
-Summary4,Description4,2017/03/01,2017/03/02,5.00,6.00,task,web,sprint1,sprint2,4,,
-Summary4-1,Description4-1,,,,,task,,,,4,,*
-Summary4-2,Description4-2,,,,,task,,,,4,,*
-Summary4-3,Description4-3,,,,,task,,,,4,,*
+Summary (Required), Description, StartDate, DueDate, EstimatedHours, ActualHours, IssueTypeName (Required), CategoryName, VersionName, MilestoneName, PriorityID, AssigneeName, ParentIssueKey, Text, Sentence, Number, Date, Single List, Multiple List, Checkbox, Radio
+Summary1,Description1,2017/01/01,2017/01/02,1.00,2.00,task,web,sprint1,sprint2,2,,,apple,orange,10,2017/01/01,select-1,select-2,select-3,select-3
+Summary2,Description2,2017/02/01,2017/02/02,3.00,4.00,task,web,sprint1,sprint2,3,,,,,,,,,,
+Summary3,Description3,2017/03/01,2017/03/02,5.00,6.00,task,web,sprint1,sprint2,4,,,,,,,,,,
+Summary4,Description4,2017/03/01,2017/03/02,5.00,6.00,task,web,sprint1,sprint2,4,,,,,,,,,,
+Summary4-1,Description4-1,,,,,task,,,,4,,*,,,,,,,,
+Summary4-2,Description4-2,,,,,task,,,,4,,*,,,,,,,,
+Summary4-3,Description4-3,,,,,task,,,,4,,*,,,,,,,,

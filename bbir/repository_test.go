@@ -24,12 +24,13 @@ func (r *IssueRepositoryAsMock) AddIssue(ctx context.Context, projectID ProjectI
 }
 
 type ProjectRepositoryAsMock struct {
-	getProjectID        func() ProjectID
-	findUserByName      func(name string) *User
-	findIssueTypeByName func(name string) *IssueType
-	findCategoryByName  func(name string) *Category
-	findVersionByName   func(name string) *Version
-	prefetch            func(ctx context.Context) error
+	getProjectID          func() ProjectID
+	findUserByName        func(name string) *User
+	findIssueTypeByName   func(name string) *IssueType
+	findCategoryByName    func(name string) *Category
+	findVersionByName     func(name string) *Version
+	findCustomFieldByName func(name string) *CustomField
+	prefetch              func(ctx context.Context) error
 }
 
 func (r *ProjectRepositoryAsMock) GetProjectID() ProjectID {
@@ -50,6 +51,10 @@ func (r *ProjectRepositoryAsMock) FindCategoryByName(name string) *Category {
 
 func (r *ProjectRepositoryAsMock) FindVersionByName(name string) *Version {
 	return r.findVersionByName(name)
+}
+
+func (r *ProjectRepositoryAsMock) FindCustomFieldByName(name string) *CustomField {
+	return r.findCustomFieldByName(name)
 }
 
 func (r *ProjectRepositoryAsMock) Prefetch(ctx context.Context) error {
@@ -90,6 +95,33 @@ func NewInjectorForRepositoryTest(t *testing.T) shot.Injector {
 				version2 := &Version{ID: 2, Name: "sprint2"}
 				version3 := &Version{ID: 3, Name: "sprint3"}
 				return []*Version{version1, version2, version3}, nil
+			},
+			getCustomFields: func(ctx context.Context, id ProjectID) ([]*CustomField, error) {
+				text := &CustomField{ID: 1, TypeID: 1, Name: "Text"}
+				sentence := &CustomField{ID: 2, TypeID: 2, Name: "Sentence"}
+				number := &CustomField{ID: 3, TypeID: 3, Name: "Number"}
+				date := &CustomField{ID: 4, TypeID: 4, Name: "Date"}
+				singleList := &CustomField{ID: 5, TypeID: 5, Name: "Single List", Items: []*CustomFieldItem{
+					{ID: 1, Name: "select-1"},
+					{ID: 2, Name: "select-2"},
+					{ID: 3, Name: "select-3"},
+				}}
+				multipleList := &CustomField{ID: 6, TypeID: 6, Name: "Multiple List", Items: []*CustomFieldItem{
+					{ID: 1, Name: "select-1"},
+					{ID: 2, Name: "select-2"},
+					{ID: 3, Name: "select-3"},
+				}}
+				checkbox := &CustomField{ID: 7, TypeID: 7, Name: "Checkbox", Items: []*CustomFieldItem{
+					{ID: 1, Name: "select-1"},
+					{ID: 2, Name: "select-2"},
+					{ID: 3, Name: "select-3"},
+				}}
+				radio := &CustomField{ID: 8, TypeID: 8, Name: "Radio", Items: []*CustomFieldItem{
+					{ID: 1, Name: "select-1"},
+					{ID: 2, Name: "select-2"},
+					{ID: 3, Name: "select-3"},
+				}}
+				return []*CustomField{text, sentence, number, date, singleList, multipleList, checkbox, radio}, nil
 			},
 			getIssue: func(ctx context.Context, issueKey string) (*Issue, error) {
 				switch issueKey {

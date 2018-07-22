@@ -3,6 +3,25 @@ package bbir
 import "testing"
 
 func Test_Line_NewLine(t *testing.T) {
+
+	header := []string{
+		"Summary",
+		"Description",
+		"StartDate",
+		"DueDate",
+		"EstimatedHours",
+		"ActualHours",
+		"IssueType",
+		"Category",
+		"Version",
+		"Milestone",
+		"Priority",
+		"Assignee",
+		"ParentIssue",
+		"CustomCheckBox1",
+		"CustomCheckBox2",
+	}
+
 	record := []string{
 		"Summary",
 		"Description",
@@ -17,8 +36,10 @@ func Test_Line_NewLine(t *testing.T) {
 		"2",
 		"ken",
 		"*",
+		"1",
+		"2",
 	}
-	line := NewLine(record)
+	line := NewLine(header, record)
 	if record[0] != line.Summary {
 		t.Errorf("Could not match a value. want: %s, result: %s", record[0], line.Summary)
 	}
@@ -57,5 +78,11 @@ func Test_Line_NewLine(t *testing.T) {
 	}
 	if record[12] != line.ParentIssue {
 		t.Errorf("Could not match a value. want: %s, result: %s", record[12], line.ParentIssue)
+	}
+	if record[13] != line.CustomFields[header[13]] {
+		t.Errorf("Could not match a value. want: %s, result: %s", record[13], line.CustomFields[header[13]])
+	}
+	if record[14] != line.CustomFields[header[14]] {
+		t.Errorf("Could not match a value. want: %s, result: %s", record[14], line.CustomFields[header[14]])
 	}
 }

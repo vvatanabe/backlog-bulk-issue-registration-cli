@@ -3,6 +3,7 @@ package bbir
 import (
 	"encoding/csv"
 	"io"
+	"strings"
 )
 
 func NewCSVReader(r io.Reader) *CSVReader {
@@ -17,17 +18,28 @@ type CSVReader struct {
 }
 
 func (r *CSVReader) ReadAll() (size int, lines []*Line, err error) {
-	for i := 0; ; i++ {
+
+	header, err := r.Read()
+	if err == io.EOF {
+		return len(lines), lines, nil
+	} else if err != nil {
+		return 0, []*Line{}, err
+	}
+
+	for i, name := range header {
+		name = strings.TrimLeft(name, " ")
+		name = strings.TrimRight(name, " ")
+		header[i] = name
+	}
+
+	for i := 1; ; i++ {
 		record, err := r.Read()
 		if err == io.EOF {
 			break
 		} else if err != nil {
 			return 0, []*Line{}, err
 		}
-		if i == 0 {
-			continue
-		}
-		lines = append(lines, NewLine(record))
+		lines = append(lines, NewLine(header, record))
 	}
 	return len(lines), lines, nil
 }
