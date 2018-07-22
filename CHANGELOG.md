@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.3.0](https://github.com/vvatanabe/backlog-bulk-issue-registration-cli/compare/0.2.0...0.3.0) (2018-07-22)
+
+* supports custom field registration (#5) [#10](https://github.com/vvatanabe/backlog-bulk-issue-registration-cli/pull/10) ([vvatanabe](https://github.com/vvatanabe))
+
 ## [0.2.0](https://github.com/vvatanabe/backlog-bulk-issue-registration-cli/compare/0.1.0...0.2.0) (2018-07-19)
 
 * change value of assignee from user id to name (#3) [#9](https://github.com/vvatanabe/backlog-bulk-issue-registration-cli/pull/9) ([vvatanabe](https://github.com/vvatanabe))
