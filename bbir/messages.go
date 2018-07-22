@@ -27,6 +27,11 @@ type Messages interface {
 	Line(int) string
 	TagOfValidationProgressBar() string
 	TagOfRegistrationProgressBar() string
+
+	CustomFieldIsNotRegistered(name string) string
+	CustomFieldValueShouldBeTypeInt(name, value string) string
+	CustomFieldValueShouldBeTypeDate(name, value string) string
+	CustomFieldChoiceIsNotRegistered(name string, choice string) string
 }
 
 func NewJapanese() Messages {
@@ -125,6 +130,22 @@ func (m *Japanese) TagOfRegistrationProgressBar() string {
 	return "課題データを登録"
 }
 
+func (m *Japanese) CustomFieldIsNotRegistered(name string) string {
+	return fmt.Sprintf("カスタム属性 (%v) は登録されていません", name)
+}
+
+func (m *Japanese) CustomFieldValueShouldBeTypeInt(name, value string) string {
+	return fmt.Sprintf("このカスタム属性 (%v) の値はint型でなければなりません - 値: %v", name, value)
+}
+
+func (m *Japanese) CustomFieldValueShouldBeTypeDate(name, value string) string {
+	return fmt.Sprintf("このカスタム属性 (%v) の値はDate型でなければなりません - 値: %v", name, value)
+}
+
+func (m *Japanese) CustomFieldChoiceIsNotRegistered(name string, choice string) string {
+	return fmt.Sprintf("このカスタム属性 (%v) の選択肢 (%v) は登録されていません", name, choice)
+}
+
 func NewEnglish() Messages {
 	return &English{}
 }
@@ -219,4 +240,20 @@ func (m *English) TagOfValidationProgressBar() string {
 
 func (m *English) TagOfRegistrationProgressBar() string {
 	return "Registration Issue"
+}
+
+func (m *English) CustomFieldIsNotRegistered(name string) string {
+	return fmt.Sprintf("The custom field (%v) is not registered", name)
+}
+
+func (m *English) CustomFieldValueShouldBeTypeInt(name, value string) string {
+	return fmt.Sprintf("The value of this custom field (%v) should be type int - value: %v", name, value)
+}
+
+func (m *English) CustomFieldValueShouldBeTypeDate(name, value string) string {
+	return fmt.Sprintf("The value of this custom field (%v) should be type date - value: %v", name, value)
+}
+
+func (m *English) CustomFieldChoiceIsNotRegistered(name string, choice string) string {
+	return fmt.Sprintf("The choice of this custom field (%v) is not registered - choice: %v", name, choice)
 }

@@ -4,9 +4,9 @@ type Callback func(*CallbackOptions)
 
 func NewDefaultCallbackOptions() *CallbackOptions {
 	return &CallbackOptions{
-		Each: func() {},
+		Each:   func() {},
 		Before: func() {},
-		After: func() {},
+		After:  func() {},
 	}
 }
 

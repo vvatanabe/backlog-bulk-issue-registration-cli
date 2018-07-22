@@ -31,6 +31,7 @@ type CategoryID int
 type VersionID int
 type UserID int
 type IssueID int
+type CustomFieldID int
 
 type Command struct {
 	Line                       int
@@ -48,6 +49,7 @@ type Command struct {
 	MilestoneID                *VersionID
 	AssigneeID                 *UserID
 	ParentIssueID              *IssueID
+	CustomFields               map[CustomFieldID]interface{}
 	Children                   []*Command
 	HasUnregisteredParentIssue bool
 }
@@ -57,7 +59,7 @@ func (cmd *Command) AddChild(child *Command) {
 }
 
 func (cmd *Command) ToAddIssueOptions() *v2.AddIssueOptions {
-	opt := &v2.AddIssueOptions{}
+	opt := &v2.AddIssueOptions{CustomFields: make(map[int]interface{})}
 	opt.Description = cmd.Description
 	opt.StartDate = cmd.StartDate
 	opt.DueDate = cmd.DueDate
@@ -81,6 +83,9 @@ func (cmd *Command) ToAddIssueOptions() *v2.AddIssueOptions {
 	}
 	if cmd.ParentIssueID != nil {
 		opt.ParentIssueID = int(*cmd.ParentIssueID)
+	}
+	for k, v := range cmd.CustomFields {
+		opt.CustomFields[int(k)] = v
 	}
 	return opt
 }

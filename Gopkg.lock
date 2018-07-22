@@ -50,7 +50,7 @@
   revision = "60189e4bc956c98c2163823261fb6974c5deade0"
 
 [[projects]]
-  digest = "1:6e496d316cc2c0e1f9dc938f5e0210828c1335c2d1dd0acc43977b82ea25eb60"
+  digest = "1:1ed176074f8ec9776f8df18189e19f979f609e48a3f9f928c9b0e3048f37a46a"
   name = "github.com/vvatanabe/go-backlog"
   packages = [
     "backlog/internal",
@@ -59,8 +59,8 @@
     "httpc",
   ]
   pruneopts = ""
-  revision = "050e0d6b629a27686826907f093b1a7470115fae"
-  version = "0.9.0"
+  revision = "8ebe50ad6ba76bf6b5b0126f9302dc0fd1847474"
+  version = "0.9.1"
 
 [[projects]]
   digest = "1:dff3c3476f5a84dcb67575d22599ec5542e32a6c254aa535f9db0a7961499911"

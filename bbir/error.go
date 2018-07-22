@@ -1,8 +1,9 @@
 package bbir
 
 import (
-	"github.com/golang/go/src/sort"
 	"strings"
+
+	"github.com/golang/go/src/sort"
 )
 
 const (

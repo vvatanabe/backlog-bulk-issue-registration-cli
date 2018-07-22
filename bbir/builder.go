@@ -7,6 +7,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/vvatanabe/go-backlog/backlog/v2"
 )
 
 type CommandBuilder interface {
@@ -27,7 +29,7 @@ type resolver func(*Command, *Line) error
 
 func (b *commandBuilder) Build(lineNum int, line *Line) (*Command, error) {
 	var errs []error
-	command := &Command{Line: lineNum, Children: []*Command{}}
+	command := &Command{Line: lineNum, Children: []*Command{}, CustomFields: make(map[CustomFieldID]interface{})}
 	for _, f := range []resolver{
 		b.ensureProjectID,
 		b.ensureSummary,
@@ -42,6 +44,7 @@ func (b *commandBuilder) Build(lineNum int, line *Line) (*Command, error) {
 		b.ensureMilestoneID,
 		b.ensureAssigneeID,
 		b.ensureParentIssue,
+		b.ensureCustomFields,
 	} {
 		if err := f(command, line); err != nil {
 			errs = append(errs, err)
@@ -224,4 +227,53 @@ func (b *commandBuilder) ensureParentIssue(cmd *Command, line *Line) error {
 		cmd.ParentIssueID = NewIssueIDPtr(v.ID)
 		return nil
 	}
+}
+
+func (b *commandBuilder) ensureCustomFields(cmd *Command, line *Line) error {
+	var errs []error
+	for k, v := range line.CustomFields {
+		cf := b.project.FindCustomFieldByName(k)
+		if cf == nil {
+			errs = append(errs, errors.New(b.msgs.CustomFieldIsNotRegistered(k)))
+			continue
+		}
+		if v == "" {
+			continue
+		}
+		if 1 <= cf.TypeID && cf.TypeID <= 2 { // 1: Text, 2: Sentence
+			cmd.CustomFields[CustomFieldID(cf.ID)] = v
+		} else if cf.TypeID == 3 { // 3: Number
+			if _, err := strconv.Atoi(v); err != nil {
+				errs = append(errs, errors.New(b.msgs.CustomFieldValueShouldBeTypeInt(k, v)))
+			} else {
+				cmd.CustomFields[CustomFieldID(cf.ID)] = v
+			}
+		} else if cf.TypeID == 4 { // 4: Date
+			v = strings.Replace(v, "/", "-", 3)
+			if _, err := time.Parse(DateLayout, v); err != nil {
+				errs = append(errs, errors.New(b.msgs.CustomFieldValueShouldBeTypeDate(k, v)))
+			} else {
+				cmd.CustomFields[CustomFieldID(cf.ID)] = v
+			}
+		} else if 5 <= cf.TypeID && cf.TypeID <= 8 { // 5: Single list, 6: Multiple list, 7: Checkbox, 8: Radio
+			if item := findCustomFieldItemByName(cf, v); item == nil {
+				errs = append(errs, errors.New(b.msgs.CustomFieldChoiceIsNotRegistered(k, v)))
+			} else {
+				cmd.CustomFields[CustomFieldID(cf.ID)] = item.ID
+			}
+		}
+	}
+	if len(errs) > 0 {
+		return NewMultipleErrors(errs)
+	}
+	return nil
+}
+
+func findCustomFieldItemByName(field *v2.CustomField, name string) *v2.CustomFieldItem {
+	for _, item := range field.Items {
+		if name == item.Name {
+			return item
+		}
+	}
+	return nil
 }

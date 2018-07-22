@@ -1,8 +1,8 @@
 package bbir
 
 import (
-	"github.com/vvatanabe/shot/shot"
 	"github.com/pkg/errors"
+	"github.com/vvatanabe/shot/shot"
 )
 
 func NewModule(cfg *Config) (Module, error) {

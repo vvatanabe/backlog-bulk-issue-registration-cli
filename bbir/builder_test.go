@@ -6,15 +6,16 @@ import (
 
 	"fmt"
 
+	"sync/atomic"
+
 	. "github.com/vvatanabe/go-backlog/backlog/v2"
 	"github.com/vvatanabe/shot/shot"
-	"sync/atomic"
 )
 
 func NewInjectorForCommandBuilderTest(t *testing.T) shot.Injector {
 	injector, err := shot.CreateInjector(func(binder shot.Binder) {
 		binder.Bind(new(Config)).ToInstance(&Config{
-			ProjectKey:"EXAMPLE",
+			ProjectKey: "EXAMPLE",
 		})
 		binder.Bind(new(BulkCommandExecutor)).ToConstructor(NewBulkCommandExecutor).AsEagerSingleton()
 		binder.Bind(new(CommandConverter)).ToConstructor(NewCommandConverter).AsEagerSingleton()
@@ -24,33 +25,60 @@ func NewInjectorForCommandBuilderTest(t *testing.T) shot.Injector {
 		binder.Bind(new(BacklogAPIClient)).ToInstance(&BacklogAPIClientAsMock{
 			getProject: func(ctx context.Context, projectKey string) (*Project, error) {
 				return &Project{
-					ID: 1,
+					ID:         1,
 					ProjectKey: projectKey,
 				}, nil
 			},
 			getProjectUsers: func(ctx context.Context, id ProjectID) ([]*User, error) {
 				user1 := &User{ID: 1, Name: "ken"}
 				user2 := &User{ID: 2, Name: "taro"}
-				user3 := 	&User{ID: 3, Name: "hana"}
+				user3 := &User{ID: 3, Name: "hana"}
 				return []*User{user1, user2, user3}, nil
 			},
 			getIssueTypes: func(ctx context.Context, id ProjectID) ([]*IssueType, error) {
 				issueType1 := &IssueType{ID: 1, Name: "task"}
 				issueType2 := &IssueType{ID: 2, Name: "bug"}
-				issueType3 := 	&IssueType{ID: 3, Name: "operation"}
+				issueType3 := &IssueType{ID: 3, Name: "operation"}
 				return []*IssueType{issueType1, issueType2, issueType3}, nil
 			},
 			getCategories: func(ctx context.Context, id ProjectID) ([]*Category, error) {
 				category1 := &Category{ID: 1, Name: "web"}
 				category2 := &Category{ID: 2, Name: "iPhone"}
-				category3 := 	&Category{ID: 3, Name: "android"}
+				category3 := &Category{ID: 3, Name: "android"}
 				return []*Category{category1, category2, category3}, nil
 			},
 			getVersions: func(ctx context.Context, id ProjectID) ([]*Version, error) {
 				version1 := &Version{ID: 1, Name: "sprint1"}
 				version2 := &Version{ID: 2, Name: "sprint2"}
-				version3 := 	&Version{ID: 3, Name: "sprint3"}
+				version3 := &Version{ID: 3, Name: "sprint3"}
 				return []*Version{version1, version2, version3}, nil
+			},
+			getCustomFields: func(ctx context.Context, id ProjectID) ([]*CustomField, error) {
+				text := &CustomField{ID: 1, TypeID: 1, Name: "Text"}
+				sentence := &CustomField{ID: 2, TypeID: 2, Name: "Sentence"}
+				number := &CustomField{ID: 3, TypeID: 3, Name: "Number"}
+				date := &CustomField{ID: 4, TypeID: 4, Name: "Date"}
+				singleList := &CustomField{ID: 5, TypeID: 5, Name: "Single List", Items: []*CustomFieldItem{
+					{ID: 1, Name: "select-1"},
+					{ID: 2, Name: "select-2"},
+					{ID: 3, Name: "select-3"},
+				}}
+				multipleList := &CustomField{ID: 6, TypeID: 6, Name: "Multiple List", Items: []*CustomFieldItem{
+					{ID: 1, Name: "select-1"},
+					{ID: 2, Name: "select-2"},
+					{ID: 3, Name: "select-3"},
+				}}
+				checkbox := &CustomField{ID: 7, TypeID: 7, Name: "Checkbox", Items: []*CustomFieldItem{
+					{ID: 1, Name: "select-1"},
+					{ID: 2, Name: "select-2"},
+					{ID: 3, Name: "select-3"},
+				}}
+				radio := &CustomField{ID: 8, TypeID: 8, Name: "Radio", Items: []*CustomFieldItem{
+					{ID: 1, Name: "select-1"},
+					{ID: 2, Name: "select-2"},
+					{ID: 3, Name: "select-3"},
+				}}
+				return []*CustomField{text, sentence, number, date, singleList, multipleList, checkbox, radio}, nil
 			},
 			getIssue: func(ctx context.Context, issueKey string) (*Issue, error) {
 				switch issueKey {
@@ -495,5 +523,67 @@ func Test_CommandBuilder_resolveParentIssue_should_return_error(t *testing.T) {
 		if err := builder.ensureParentIssue(command, line); err == nil {
 			t.Errorf("Should return error. value: %v", line.ParentIssue)
 		}
+	}
+}
+
+func Test_CommandBuilder_ensureCustomFields_should_return_error(t *testing.T) {
+	injector := NewInjectorForCommandBuilderTest(t)
+	builder := injector.Get(new(CommandBuilder)).(*commandBuilder)
+	command := &Command{CustomFields: make(map[CustomFieldID]interface{})}
+	line := &Line{CustomFields: make(map[string]string)}
+	line.CustomFields["Text"] = "apple"
+	line.CustomFields["Sentence"] = "orange"
+	line.CustomFields["Number"] = "abc"
+	line.CustomFields["Date"] = "efg"
+	line.CustomFields["Single List"] = "select-11"
+	line.CustomFields["Multiple List"] = "select-12"
+	line.CustomFields["Checkbox"] = "select-13"
+	line.CustomFields["Radio"] = "select-13"
+
+	if err := builder.ensureCustomFields(command, line); err == nil {
+		t.Error("Should return error.")
+	}
+}
+
+func Test_CommandBuilder_ensureCustomFields(t *testing.T) {
+	injector := NewInjectorForCommandBuilderTest(t)
+	builder := injector.Get(new(CommandBuilder)).(*commandBuilder)
+	command := &Command{CustomFields: make(map[CustomFieldID]interface{})}
+	line := &Line{CustomFields: make(map[string]string)}
+	line.CustomFields["Text"] = "apple"
+	line.CustomFields["Sentence"] = "orange"
+	line.CustomFields["Number"] = "1"
+	line.CustomFields["Date"] = "2018-01-01"
+	line.CustomFields["Single List"] = "select-1"
+	line.CustomFields["Multiple List"] = "select-2"
+	line.CustomFields["Checkbox"] = "select-3"
+	line.CustomFields["Radio"] = "select-3"
+
+	if err := builder.ensureCustomFields(command, line); err != nil {
+		t.Errorf("Could not resolve. %s", err.Error())
+	}
+	if command.CustomFields[CustomFieldID(1)] != line.CustomFields["Text"] {
+		t.Errorf("Could not match. want: %v, result: %v", line.CustomFields["Text"], command.CustomFields[CustomFieldID(1)])
+	}
+	if command.CustomFields[CustomFieldID(2)] != line.CustomFields["Sentence"] {
+		t.Errorf("Could not match. want: %v, result: %v", line.CustomFields["Sentence"], command.CustomFields[CustomFieldID(2)])
+	}
+	if command.CustomFields[CustomFieldID(3)] != line.CustomFields["Number"] {
+		t.Errorf("Could not match. want: %v, result: %v", line.CustomFields["Number"], command.CustomFields[CustomFieldID(3)])
+	}
+	if command.CustomFields[CustomFieldID(4)] != line.CustomFields["Date"] {
+		t.Errorf("Could not match. want: %v, result: %v", line.CustomFields["Date"], command.CustomFields[CustomFieldID(4)])
+	}
+	if command.CustomFields[CustomFieldID(5)] != 1 {
+		t.Errorf("Could not match. want: %v, result: %v", 1, command.CustomFields[CustomFieldID(5)])
+	}
+	if command.CustomFields[CustomFieldID(6)] != 2 {
+		t.Errorf("Could not match. want: %v, result: %v", 2, command.CustomFields[CustomFieldID(6)])
+	}
+	if command.CustomFields[CustomFieldID(7)] != 3 {
+		t.Errorf("Could not match. want: %v, result: %v", 3, command.CustomFields[CustomFieldID(7)])
+	}
+	if command.CustomFields[CustomFieldID(8)] != 3 {
+		t.Errorf("Could not match. want: %v, result: %v", 3, command.CustomFields[CustomFieldID(8)])
 	}
 }

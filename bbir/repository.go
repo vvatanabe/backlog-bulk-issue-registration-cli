@@ -56,17 +56,19 @@ type ProjectRepository interface {
 	FindIssueTypeByName(name string) *v2.IssueType
 	FindCategoryByName(name string) *v2.Category
 	FindVersionByName(name string) *v2.Version
+	FindCustomFieldByName(name string) *v2.CustomField
 	Prefetch(ctx context.Context) error
 }
 
 func NewProjectHTTPClient(cfg *Config, client BacklogAPIClient) ProjectRepository {
 	return &ProjectHTTPClient{
-		cfg:        cfg,
-		client:     client,
-		users:      make(map[string]*v2.User),
-		issueTypes: make(map[string]*v2.IssueType),
-		categories: make(map[string]*v2.Category),
-		versions:   make(map[string]*v2.Version),
+		cfg:          cfg,
+		client:       client,
+		users:        make(map[string]*v2.User),
+		issueTypes:   make(map[string]*v2.IssueType),
+		categories:   make(map[string]*v2.Category),
+		versions:     make(map[string]*v2.Version),
+		customFields: make(map[string]*v2.CustomField),
 	}
 }
 
@@ -74,11 +76,12 @@ type ProjectHTTPClient struct {
 	cfg    *Config
 	client BacklogAPIClient
 
-	project    *v2.Project
-	users      map[string]*v2.User
-	issueTypes map[string]*v2.IssueType
-	categories map[string]*v2.Category
-	versions   map[string]*v2.Version
+	project      *v2.Project
+	users        map[string]*v2.User
+	issueTypes   map[string]*v2.IssueType
+	categories   map[string]*v2.Category
+	versions     map[string]*v2.Version
+	customFields map[string]*v2.CustomField
 }
 
 func (s *ProjectHTTPClient) GetProjectID() ProjectID {
@@ -111,6 +114,14 @@ func (s *ProjectHTTPClient) FindCategoryByName(name string) *v2.Category {
 
 func (s *ProjectHTTPClient) FindVersionByName(name string) *v2.Version {
 	v, ok := s.versions[name]
+	if !ok {
+		return nil
+	}
+	return v
+}
+
+func (s *ProjectHTTPClient) FindCustomFieldByName(name string) *v2.CustomField {
+	v, ok := s.customFields[name]
 	if !ok {
 		return nil
 	}
@@ -164,6 +175,16 @@ func (s *ProjectHTTPClient) Prefetch(ctx context.Context) error {
 			}
 			for _, v := range versions {
 				s.versions[v.Name] = v
+			}
+			return nil
+		},
+		func() error {
+			customFields, err := s.client.GetCustomFields(errCtx, id)
+			if err != nil {
+				return err
+			}
+			for _, v := range customFields {
+				s.customFields[v.Name] = v
 			}
 			return nil
 		},

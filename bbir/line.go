@@ -1,13 +1,17 @@
 package bbir
 
-import "strings"
+import (
+	"strings"
+)
 
-
-
-func NewLine(record []string) *Line {
-	line := &Line{}
+func NewLine(header []string, record []string) *Line {
+	line := &Line{CustomFields: make(map[string]string)}
 	for i, v := range record {
-		injectors[i](v, line)
+		if i < len(injectors) {
+			injectors[i](v, line)
+		} else {
+			line.CustomFields[header[i]] = v
+		}
 	}
 	return line
 }
@@ -68,4 +72,5 @@ type Line struct {
 	Priority       string
 	Assignee       string
 	ParentIssue    string
+	CustomFields   map[string]string
 }

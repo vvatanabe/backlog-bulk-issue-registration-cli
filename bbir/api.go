@@ -15,6 +15,7 @@ type BacklogAPIClient interface {
 	GetIssueTypes(ctx context.Context, id ProjectID) ([]*v2.IssueType, error)
 	GetCategories(ctx context.Context, id ProjectID) ([]*v2.Category, error)
 	GetVersions(ctx context.Context, id ProjectID) ([]*v2.Version, error)
+	GetCustomFields(ctx context.Context, id ProjectID) ([]*v2.CustomField, error)
 }
 
 func NewBacklogAPIClient(cfg *Config) BacklogAPIClient {
@@ -77,6 +78,14 @@ func (c *client) GetCategories(ctx context.Context, id ProjectID) ([]*v2.Categor
 
 func (c *client) GetVersions(ctx context.Context, id ProjectID) ([]*v2.Version, error) {
 	v, _, err := c.Projects.GetVersions(ctx, fmt.Sprintf("%v", id))
+	if err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (c *client) GetCustomFields(ctx context.Context, id ProjectID) ([]*v2.CustomField, error) {
+	v, _, err := c.Projects.GetCustomFields(ctx, fmt.Sprintf("%v", id))
 	if err != nil {
 		return nil, err
 	}

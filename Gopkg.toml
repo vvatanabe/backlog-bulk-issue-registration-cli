@@ -37,7 +37,7 @@
 
 [[constraint]]
   name = "github.com/vvatanabe/go-backlog"
-  version = "0.9.0"
+  version = "0.9.1"
 
 [[constraint]]
   name = "github.com/pkg/errors"
