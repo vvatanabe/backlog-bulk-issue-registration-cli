@@ -55,5 +55,4 @@ upload:
 	ghr -username vvatanabe -replace $(VERSION) ./dist/$(VERSION)
 
 .PHONY: release
-release:
-	bump crossbuild upload
+release: bump crossbuild upload
