@@ -80,6 +80,12 @@ func NewInjectorForCommandBuilderTest(t *testing.T) shot.Injector {
 				}}
 				return []*CustomField{text, sentence, number, date, singleList, multipleList, checkbox, radio}, nil
 			},
+			getPriorities: func(ctx context.Context) ([]*Priority, error) {
+				priority1 := &Priority{ID: 2, Name: "High"}
+				priority2 := &Priority{ID: 3, Name: "Normal"}
+				priority3 := &Priority{ID: 4, Name: "Low"}
+				return []*Priority{priority1, priority2, priority3}, nil
+			},
 			getIssue: func(ctx context.Context, issueKey string) (*Issue, error) {
 				switch issueKey {
 				case "EXAMPLE-1":
@@ -131,7 +137,7 @@ func Test_CommandBuilder(t *testing.T) {
 		Category:       "web",
 		Version:        "sprint1",
 		Milestone:      "sprint1",
-		Priority:       "2",
+		Priority:       "Normal",
 		Assignee:       "ken",
 		ParentIssue:    "*",
 	}); err != nil {
@@ -469,7 +475,7 @@ func Test_CommandBuilder_resolveAssigneeID_should_return_error(t *testing.T) {
 func Test_CommandBuilder_resolvePriorityID(t *testing.T) {
 	injector := NewInjectorForCommandBuilderTest(t)
 	builder := injector.Get(new(CommandBuilder)).(*commandBuilder)
-	tests := []string{"", "2", "3", "4"}
+	tests := []string{"", "High", "Normal", "Low"}
 	for _, v := range tests {
 		command := &Command{}
 		line := &Line{
@@ -484,7 +490,7 @@ func Test_CommandBuilder_resolvePriorityID(t *testing.T) {
 func Test_CommandBuilder_resolvePriorityID_should_return_error(t *testing.T) {
 	injector := NewInjectorForCommandBuilderTest(t)
 	builder := injector.Get(new(CommandBuilder)).(*commandBuilder)
-	tests := []string{"1", "5"}
+	tests := []string{"xxx", "yyy"}
 	for _, v := range tests {
 		command := &Command{}
 		line := &Line{

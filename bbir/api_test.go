@@ -15,6 +15,7 @@ type BacklogAPIClientAsMock struct {
 	getCategories   func(ctx context.Context, id ProjectID) ([]*Category, error)
 	getVersions     func(ctx context.Context, id ProjectID) ([]*Version, error)
 	getCustomFields func(ctx context.Context, id ProjectID) ([]*CustomField, error)
+	getPriorities   func(ctx context.Context) ([]*Priority, error)
 }
 
 func (m *BacklogAPIClientAsMock) AddIssue(ctx context.Context, projectID ProjectID, summary string, issueTypeID IssueTypeID, priorityID PriorityID, opt *AddIssueOptions) (*Issue, error) {
@@ -47,4 +48,8 @@ func (m *BacklogAPIClientAsMock) GetVersions(ctx context.Context, id ProjectID) 
 
 func (m *BacklogAPIClientAsMock) GetCustomFields(ctx context.Context, id ProjectID) ([]*CustomField, error) {
 	return m.getCustomFields(ctx, id)
+}
+
+func (m *BacklogAPIClientAsMock) GetPriorities(ctx context.Context) ([]*Priority, error) {
+	return m.getPriorities(ctx)
 }

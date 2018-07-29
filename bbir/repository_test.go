@@ -30,6 +30,7 @@ type ProjectRepositoryAsMock struct {
 	findCategoryByName    func(name string) *Category
 	findVersionByName     func(name string) *Version
 	findCustomFieldByName func(name string) *CustomField
+	findPriorityByName    func(name string) *Priority
 	prefetch              func(ctx context.Context) error
 }
 
@@ -55,6 +56,10 @@ func (r *ProjectRepositoryAsMock) FindVersionByName(name string) *Version {
 
 func (r *ProjectRepositoryAsMock) FindCustomFieldByName(name string) *CustomField {
 	return r.findCustomFieldByName(name)
+}
+
+func (r *ProjectRepositoryAsMock) FindPriorityByName(name string) *Priority {
+	return r.findPriorityByName(name)
 }
 
 func (r *ProjectRepositoryAsMock) Prefetch(ctx context.Context) error {
@@ -122,6 +127,12 @@ func NewInjectorForRepositoryTest(t *testing.T) shot.Injector {
 					{ID: 3, Name: "select-3"},
 				}}
 				return []*CustomField{text, sentence, number, date, singleList, multipleList, checkbox, radio}, nil
+			},
+			getPriorities: func(ctx context.Context) ([]*Priority, error) {
+				priority1 := &Priority{ID: 2, Name: "High"}
+				priority2 := &Priority{ID: 3, Name: "Normal"}
+				priority3 := &Priority{ID: 4, Name: "Low"}
+				return []*Priority{priority1, priority2, priority3}, nil
 			},
 			getIssue: func(ctx context.Context, issueKey string) (*Issue, error) {
 				switch issueKey {
@@ -271,6 +282,28 @@ func Test_ProjectHTTPClient_FindVersionByName_should_return_nil_if_does_not_matc
 	injector := NewInjectorForRepositoryTest(t)
 	project := injector.Get(new(ProjectRepository)).(*ProjectHTTPClient)
 	result := project.FindVersionByName("xxx")
+	if result != nil {
+		t.Error("Result is not nil")
+	}
+}
+
+func Test_ProjectHTTPClient_FindPriorityByName_should_return_priority_that_match_name(t *testing.T) {
+	injector := NewInjectorForRepositoryTest(t)
+	project := injector.Get(new(ProjectRepository)).(*ProjectHTTPClient)
+	want := "Normal"
+	result := project.FindPriorityByName(want)
+	if result == nil {
+		t.Error("Result is nil")
+	}
+	if want != result.Name {
+		t.Errorf("Could not match result. want: %v, result:  %v", want, result)
+	}
+}
+
+func Test_ProjectHTTPClient_FindPriorityByName_should_return_nil_if_does_not_match_name(t *testing.T) {
+	injector := NewInjectorForRepositoryTest(t)
+	project := injector.Get(new(ProjectRepository)).(*ProjectHTTPClient)
+	result := project.FindPriorityByName("xxx")
 	if result != nil {
 		t.Error("Result is not nil")
 	}
