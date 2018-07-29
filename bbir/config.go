@@ -17,6 +17,7 @@ func NewConfig(c *cli.Context) *Config {
 			return En
 		}(),
 		Progress: c.Bool("progress"),
+		Check: c.Bool("check"),
 	}
 
 }
@@ -28,6 +29,7 @@ type Config struct {
 	File        string
 	Lang        Lang
 	Progress    bool
+	Check       bool
 }
 
 func (c *Config) HasFile() bool {
