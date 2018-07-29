@@ -28,6 +28,7 @@ If you do not specify a FILE_PATH, it will listen on standard input.
 --key, -K value      (Required) backlog api key.                      [$BACKLOG_API_KEY]
 --lang, -l value     language setting. (ja or en) (default: "en")     [$BACKLOG_LANG]
 --progress, -p       show progress bar
+--check, -c          check mode (validation only)
 --help, -h           show help
 --version, -v        print the version
 ```
