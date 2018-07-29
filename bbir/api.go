@@ -16,6 +16,7 @@ type BacklogAPIClient interface {
 	GetCategories(ctx context.Context, id ProjectID) ([]*v2.Category, error)
 	GetVersions(ctx context.Context, id ProjectID) ([]*v2.Version, error)
 	GetCustomFields(ctx context.Context, id ProjectID) ([]*v2.CustomField, error)
+	GetPriorities(ctx context.Context) ([]*v2.Priority, error)
 }
 
 func NewBacklogAPIClient(cfg *Config) BacklogAPIClient {
@@ -86,6 +87,14 @@ func (c *client) GetVersions(ctx context.Context, id ProjectID) ([]*v2.Version, 
 
 func (c *client) GetCustomFields(ctx context.Context, id ProjectID) ([]*v2.CustomField, error) {
 	v, _, err := c.Projects.GetCustomFields(ctx, fmt.Sprintf("%v", id))
+	if err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+func (c *client) GetPriorities(ctx context.Context) ([]*v2.Priority, error) {
+	v, _, err := c.Projects.GetPriorities(ctx)
 	if err != nil {
 		return nil, err
 	}

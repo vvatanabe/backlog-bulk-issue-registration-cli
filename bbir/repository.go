@@ -57,6 +57,7 @@ type ProjectRepository interface {
 	FindCategoryByName(name string) *v2.Category
 	FindVersionByName(name string) *v2.Version
 	FindCustomFieldByName(name string) *v2.CustomField
+	FindPriorityByName(name string) *v2.Priority
 	Prefetch(ctx context.Context) error
 }
 
@@ -69,6 +70,7 @@ func NewProjectHTTPClient(cfg *Config, client BacklogAPIClient) ProjectRepositor
 		categories:   make(map[string]*v2.Category),
 		versions:     make(map[string]*v2.Version),
 		customFields: make(map[string]*v2.CustomField),
+		priorities:   make(map[string]*v2.Priority),
 	}
 }
 
@@ -82,6 +84,7 @@ type ProjectHTTPClient struct {
 	categories   map[string]*v2.Category
 	versions     map[string]*v2.Version
 	customFields map[string]*v2.CustomField
+	priorities   map[string]*v2.Priority
 }
 
 func (s *ProjectHTTPClient) GetProjectID() ProjectID {
@@ -122,6 +125,14 @@ func (s *ProjectHTTPClient) FindVersionByName(name string) *v2.Version {
 
 func (s *ProjectHTTPClient) FindCustomFieldByName(name string) *v2.CustomField {
 	v, ok := s.customFields[name]
+	if !ok {
+		return nil
+	}
+	return v
+}
+
+func (s *ProjectHTTPClient) FindPriorityByName(name string) *v2.Priority {
+	v, ok := s.priorities[name]
 	if !ok {
 		return nil
 	}
@@ -185,6 +196,16 @@ func (s *ProjectHTTPClient) Prefetch(ctx context.Context) error {
 			}
 			for _, v := range customFields {
 				s.customFields[v.Name] = v
+			}
+			return nil
+		},
+		func() error {
+			priorities, err := s.client.GetPriorities(errCtx)
+			if err != nil {
+				return err
+			}
+			for _, v := range priorities {
+				s.priorities[v.Name] = v
 			}
 			return nil
 		},

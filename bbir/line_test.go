@@ -33,7 +33,7 @@ func Test_Line_NewLine(t *testing.T) {
 		"web",
 		"sprint1",
 		"sprint1",
-		"2",
+		"Normal",
 		"ken",
 		"*",
 		"1",

@@ -9,7 +9,7 @@ type Messages interface {
 	IssueTypeIsRequired() string
 	IssueTypeIsNotRegistered(name string) string
 	PriorityIsRequired() string
-	PriorityIsInvalid(id string) string
+	PriorityIsInvalid(name string) string
 	StartDateIsInvalid(date string) string
 	DueDateIsInvalid(date string) string
 	StartDateIsAfterDueDate(start, due string) string
@@ -65,8 +65,8 @@ func (m *Japanese) PriorityIsRequired() string {
 	return "課題の優先度は必須です"
 }
 
-func (m *Japanese) PriorityIsInvalid(id string) string {
-	return fmt.Sprintf("課題の優先度 (%v) は不正です", id)
+func (m *Japanese) PriorityIsInvalid(name string) string {
+	return fmt.Sprintf("課題の優先度 (%v) は不正です", name)
 }
 
 func (m *Japanese) StartDateIsInvalid(date string) string {
@@ -177,8 +177,8 @@ func (m *English) PriorityIsRequired() string {
 	return "The priority is required"
 }
 
-func (m *English) PriorityIsInvalid(id string) string {
-	return fmt.Sprintf("The priority (%v) is invalid", id)
+func (m *English) PriorityIsInvalid(name string) string {
+	return fmt.Sprintf("The priority (%v) is invalid", name)
 }
 
 func (m *English) StartDateIsInvalid(date string) string {

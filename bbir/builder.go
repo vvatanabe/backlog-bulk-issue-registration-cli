@@ -156,12 +156,11 @@ const DefaultPriorityID = 3
 func (b *commandBuilder) ensurePriorityID(cmd *Command, line *Line) error {
 	priorityID := DefaultPriorityID
 	if line.Priority != "" {
-		v, _ := strconv.Atoi(line.Priority)
-		priorityID = v
-	}
-	// TODO Get PriorityID via project repository
-	if !(2 <= priorityID && priorityID <= 4) {
-		return errors.New(b.msgs.PriorityIsInvalid(line.Priority))
+		if v := b.project.FindPriorityByName(line.Priority); v != nil {
+			priorityID = v.ID
+		} else {
+			return errors.New(b.msgs.PriorityIsInvalid(line.Priority))
+		}
 	}
 	cmd.PriorityID = PriorityID(priorityID)
 	return nil
