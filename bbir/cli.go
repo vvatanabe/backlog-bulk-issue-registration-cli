@@ -35,6 +35,10 @@ var (
 			Name:  "progress, p",
 			Usage: "show progress bar",
 		},
+		cli.BoolFlag{
+			Name:  "check, c",
+			Usage: "check mode (validation only)",
+		},
 	}
 )
 
@@ -101,6 +105,10 @@ func action(c *cli.Context) error {
 	}()...)
 	if err != nil {
 		return cli.NewExitError(err.Error(), ValidationIssueError)
+	}
+
+	if cfg.Check {
+		return nil
 	}
 
 	if err := module.GetBulkCommandExecutor().Do(commands, func() []Callback {
