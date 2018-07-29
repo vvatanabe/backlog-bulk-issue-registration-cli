@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.4.0](https://github.com/vvatanabe/backlog-bulk-issue-registration-cli/compare/0.3.0...0.4.0) (2018-07-29)
+
+* change priority type [#14](https://github.com/vvatanabe/backlog-bulk-issue-registration-cli/pull/14) ([vvatanabe](https://github.com/vvatanabe))
+* add check mode option (#11) [#12](https://github.com/vvatanabe/backlog-bulk-issue-registration-cli/pull/12) ([vvatanabe](https://github.com/vvatanabe))
+
 ## [0.3.0](https://github.com/vvatanabe/backlog-bulk-issue-registration-cli/compare/0.2.0...0.3.0) (2018-07-22)
 
 * supports custom field registration (#5) [#10](https://github.com/vvatanabe/backlog-bulk-issue-registration-cli/pull/10) ([vvatanabe](https://github.com/vvatanabe))
